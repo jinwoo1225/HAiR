@@ -76,11 +76,10 @@ class BoundingBox:
         right_lower = (int(bottom[0] + (self.margin * math.cos(m))),
                        int(bottom[1] + (self.margin * math.sin(m))))
 
-        if left_upper[0] < 0 \
-                or left_upper[1] < 0 \
-                or right_lower[0] >= len(self.original_image[0]) \
-                or right_lower[1] >= len(self.original_image):
-            raise Exception("Bounding Box off limit")
+        image_size = (len(self.original_image[0]), len(self.original_image))
+        for y, x in [left_upper, right_lower, left_lower, right_upper]:
+            if not 0 <= y < image_size[0] or not 0 <= x < image_size[1]:
+                raise Exception("Bounding Box off limit")
 
         # original_patch 의 꼭짓점 반환
         min_xy = (min([x for x in [left_upper[0], left_lower[0], right_upper[0], right_lower[0]]]),
